@@ -1,4 +1,4 @@
-use super::Message;
+use super::WsMessage;
 use futures_util::{SinkExt, StreamExt};
 use gloo_net::websocket::futures::WebSocket as GlooWebSocket;
 use gloo_net::websocket::Message as GlooMessage;
@@ -14,20 +14,20 @@ impl WebSocket {
         })
     }
 
-    pub async fn send(&mut self, msg: Message) -> anyhow::Result<()> {
+    pub async fn send(&mut self, msg: WsMessage) -> anyhow::Result<()> {
         Ok(self.implem.send(match msg {
-            Message::Text(text) => GlooMessage::Text(text),
-            Message::Binary(data) => GlooMessage::Bytes(data),
+            WsMessage::Text(text) => GlooMessage::Text(text),
+            WsMessage::Binary(data) => GlooMessage::Bytes(data),
         }).await?)
     }
 
-    pub async fn recv(&mut self) -> anyhow::Result<Option<Message>> {
+    pub async fn recv(&mut self) -> anyhow::Result<Option<WsMessage>> {
         let Some(msg) = self.implem.next().await else {
             return Ok(None);
         };
         Ok(Some(match msg? {
-            GlooMessage::Text(text) => Message::Text(text),
-            GlooMessage::Bytes(data) => Message::Binary(data),
+            GlooMessage::Text(text) => WsMessage::Text(text),
+            GlooMessage::Bytes(data) => WsMessage::Binary(data),
         }))
     }
 }

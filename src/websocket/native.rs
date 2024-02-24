@@ -1,4 +1,4 @@
-use super::Message;
+use super::WsMessage;
 use futures_util::{SinkExt, StreamExt};
 use tokio::net::TcpStream;
 use tokio_tungstenite::{MaybeTlsStream, WebSocketStream};
@@ -20,24 +20,24 @@ impl WebSocket {
     /// Send a WebSocket message
     /// 
     /// This function is cancel-safe.
-    pub async fn send(&mut self, msg: Message) -> anyhow::Result<()> {
+    pub async fn send(&mut self, msg: WsMessage) -> anyhow::Result<()> {
         Ok(self.implem.send(match msg {
-            Message::Text(text) => TungMessage::Text(text),
-            Message::Binary(data) => TungMessage::Binary(data),
+            WsMessage::Text(text) => TungMessage::Text(text),
+            WsMessage::Binary(data) => TungMessage::Binary(data),
         }).await?)
     }
 
     /// Receive a WebSocket message
     /// 
     /// This function is cancel-safe.
-    pub async fn recv(&mut self) -> anyhow::Result<Option<Message>> {
+    pub async fn recv(&mut self) -> anyhow::Result<Option<WsMessage>> {
         loop {
             let Some(msg) = self.implem.next().await else {
                 return Ok(None);
             };
             match msg? {
-                TungMessage::Text(text) => return Ok(Some(Message::Text(text))),
-                TungMessage::Binary(data) => return Ok(Some(Message::Binary(data))),
+                TungMessage::Text(text) => return Ok(Some(WsMessage::Text(text))),
+                TungMessage::Binary(data) => return Ok(Some(WsMessage::Binary(data))),
                 TungMessage::Close(_) => return Ok(None),
                 TungMessage::Ping(_) | TungMessage::Pong(_) | TungMessage::Frame(_) => continue,
             }
