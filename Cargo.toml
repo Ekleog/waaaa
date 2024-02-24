@@ -2,6 +2,13 @@
 name = "waaaa"
 version = "0.1.0"
 edition = "2021"
+description = "WebAssembly, Automatically Abstracted Away"
+repository = "https://github.com/Ekleog/waaaa"
+homepage = "https://github.com/Ekleog/waaaa"
+documentation = "https://docs.rs/waaaa"
+license = "MIT OR Apache-2.0"
+keywords = ["async", "api", "web", "wasm", "webassembly"]
+categories = ["api-bindings", "asynchronous", "development-tools::ffi", "wasm", "web-programming"]
 
 [dependencies]
 anyhow = { version = "1.0", default-features = false, features = ["std"] }

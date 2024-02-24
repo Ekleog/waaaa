@@ -1,3 +1,9 @@
+#![doc = include_str!("../README.md")]
+#![cfg_attr(
+    not(all(target_arch = "wasm32", target_os = "unknown")),
+    warn(missing_docs)
+)]
+
 macro_rules! dispatch_inline_item {
     ( native: $native:item web: $web:item ) => {
         #[cfg(not(all(target_arch = "wasm32", target_os = "unknown")))]
