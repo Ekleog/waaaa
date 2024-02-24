@@ -37,8 +37,9 @@ use dispatch_to_submodules;
 mod sleep;
 mod spawn;
 mod traits;
-pub mod websocket;
+mod websocket;
 
 pub use sleep::*;
 pub use spawn::*;
 pub use traits::*;
+pub use websocket::*;
