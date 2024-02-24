@@ -4,12 +4,13 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-anyhow = "1.0"
+anyhow = { version = "1.0", default-features = false, features = ["std"] }
 futures-util = { version = "0.3.30", default-features = false, features = ["sink"] }
 
 [target.'cfg(not(all(target_arch = "wasm32", target_os = "unknown")))'.dependencies]
-tokio = "1.36"
-tokio-tungstenite = "0.21.0"
+tokio = { version = "1.36", default-features = false, features = ["net"] }
+tokio-tungstenite = { version = "0.21.0", default-features = false, features = ["connect", "stream"] }
 
 [target.'cfg(all(target_arch = "wasm32", target_os = "unknown"))'.dependencies]
-gloo-net = { version = "0.5.0", features = ["websocket"] }
+gloo-net = { version = "0.5.0", default-features = false, features = ["websocket"] }
+wasm-bindgen-futures = { version = "0.4.41", default-features = false }
