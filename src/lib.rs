@@ -34,9 +34,11 @@ macro_rules! dispatch_to_submodules {
 }
 use dispatch_to_submodules;
 
+mod sleep;
 mod spawn;
 mod traits;
 pub mod websocket;
 
+pub use sleep::*;
 pub use spawn::*;
 pub use traits::*;
