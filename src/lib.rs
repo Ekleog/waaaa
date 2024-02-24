@@ -13,4 +13,7 @@ macro_rules! dispatch_to_submodules {
 }
 use dispatch_to_submodules;
 
+mod traits;
 pub mod websocket;
+
+pub use traits::*;
