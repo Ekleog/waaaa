@@ -4,17 +4,22 @@ use tokio::net::TcpStream;
 use tokio_tungstenite::{MaybeTlsStream, WebSocketStream};
 use tokio_tungstenite::tungstenite::protocol::Message as TungMessage;
 
+/// A WebSocket connection
 pub struct WebSocket {
     implem: WebSocketStream<MaybeTlsStream<TcpStream>>,
 }
 
 impl WebSocket {
+    /// Connect to the WebSocket server
     pub async fn connect(url: &str) -> anyhow::Result<WebSocket> {
         Ok(WebSocket {
             implem: tokio_tungstenite::connect_async(url).await?.0,
         })
     }
 
+    /// Send a WebSocket message
+    /// 
+    /// This function is cancel-safe.
     pub async fn send(&mut self, msg: Message) -> anyhow::Result<()> {
         Ok(self.implem.send(match msg {
             Message::Text(text) => TungMessage::Text(text),
@@ -22,6 +27,9 @@ impl WebSocket {
         }).await?)
     }
 
+    /// Receive a WebSocket message
+    /// 
+    /// This function is cancel-safe.
     pub async fn recv(&mut self) -> anyhow::Result<Option<Message>> {
         loop {
             let Some(msg) = self.implem.next().await else {

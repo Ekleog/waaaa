@@ -2,7 +2,7 @@ macro_rules! dispatch_inline_item {
     ( native: $native:item web: $web:item ) => {
         #[cfg(not(all(target_arch = "wasm32", target_os = "unknown")))]
         $native
-        
+
         #[cfg(all(target_arch = "wasm32", target_os = "unknown"))]
         $web
     };
@@ -12,10 +12,10 @@ use dispatch_inline_item;
 macro_rules! dispatch_inline_stmt {
     ( native: $native:stmt ; web: $web:stmt ; ) => {
         #[cfg(not(all(target_arch = "wasm32", target_os = "unknown")))]
-        $native ;
-        
+        $native;
+
         #[cfg(all(target_arch = "wasm32", target_os = "unknown"))]
-        $web ;
+        $web;
     };
 }
 use dispatch_inline_stmt;
